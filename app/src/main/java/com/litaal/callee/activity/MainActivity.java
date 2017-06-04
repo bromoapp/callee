@@ -1,7 +1,9 @@
-package com.litaal.callee;
+package com.litaal.callee.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.litaal.callee.R;
 
 public class MainActivity extends AppCompatActivity {
 
