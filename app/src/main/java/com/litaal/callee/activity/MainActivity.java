@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements IConnectionListen
                     SdpSignalDTO dto = gson.fromJson(msg.getBody(), SdpSignalDTO.class);
                     if (dto.getSdp().getType().equalsIgnoreCase(SessionDescription.Type.OFFER.canonicalForm())) {
                         SessionDescription sdp = new SessionDescription(SessionDescription.Type.OFFER, dto.getSdp().getSdp());
-                        webRTCWorker.onReceiveOffer(sdp);
+                        webRTCWorker.onReceivedOffer(sdp);
                     }
                 } else if (msg.getBody().contains("{\"candidate\":")) {
                     CandidateSignalDTO dto = gson.fromJson(msg.getBody(), CandidateSignalDTO.class);

@@ -28,7 +28,7 @@ public class WebRTCWorker extends Service {
         return Service.START_NOT_STICKY;
     }
 
-    public void onReceiveOffer(SessionDescription sdp) {
+    public void onReceivedOffer(SessionDescription sdp) {
         log.info(">>> RECEIVED SDP TYPE: " + sdp.type.canonicalForm());
         log.info(">>> RECEIVED SDP DESC:\n" + sdp.description);
     }
