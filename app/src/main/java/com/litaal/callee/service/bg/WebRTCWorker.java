@@ -8,6 +8,8 @@ import com.litaal.callee.helper.serv.ServiceBinder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.webrtc.IceCandidate;
+import org.webrtc.SessionDescription;
 
 public class WebRTCWorker extends Service {
 
@@ -24,6 +26,17 @@ public class WebRTCWorker extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return Service.START_NOT_STICKY;
+    }
+
+    public void onReceiveOffer(SessionDescription sdp) {
+        log.info(">>> RECEIVED SDP TYPE: " + sdp.type.canonicalForm());
+        log.info(">>> RECEIVED SDP DESC:\n" + sdp.description);
+    }
+
+    public void onReceiveCandidate(IceCandidate candidate) {
+        log.info(">>> RECEIVED CANDIDATE SDP: " + candidate.sdp);
+        log.info(">>> RECEIVED CANDIDATE MID: " + candidate.sdpMid);
+        log.info(">>> RECEIVED CANDIDATE IDX: " + candidate.sdpMLineIndex);
     }
 
     @Override
