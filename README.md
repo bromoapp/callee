@@ -18,4 +18,4 @@ To test this application:
 
 Screen shoot
 
-<img style="border: 1px solid;" src="https://cloud.githubusercontent.com/assets/21073705/26759853/7cba1ca0-4934-11e7-83a4-c9afd16e5ddc.PNG" width="75%"></img> 
+<img src="https://cloud.githubusercontent.com/assets/21073705/26788482/81c24f5c-4a37-11e7-9f45-7e4e283efedf.PNG" width="75%"></img> 
