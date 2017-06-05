@@ -5,20 +5,29 @@ import android.app.Service;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.IBinder;
+import android.widget.LinearLayout;
 
+import com.litaal.callee.R;
 import com.litaal.callee.helper.rtc.PeerConnObserverImpl;
 import com.litaal.callee.helper.rtc.SdpObserverImpl;
 import com.litaal.callee.helper.serv.ServiceBinder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.webrtc.AudioSource;
+import org.webrtc.AudioTrack;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
 import org.webrtc.PeerConnection;
 import org.webrtc.PeerConnectionFactory;
+import org.webrtc.RendererCommon;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
+import org.webrtc.VideoRenderer;
+import org.webrtc.VideoRendererGui;
+import org.webrtc.VideoSource;
+import org.webrtc.VideoTrack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +63,23 @@ public class WebRTCWorker extends Service {
             if (PeerConnectionFactory.initializeAndroidGlobals(getBaseContext(), true, true, false)) {
                 peerConnFactory = new PeerConnectionFactory();
 
+                videoView = new GLSurfaceView(getBaseContext());
+                videoView.setEGLContextClientVersion(2);
+                VideoRendererGui.setView(videoView, new Runnable() {
+                    @Override
+                    public void run() {}
+                });
+                VideoRenderer vidRenderer = VideoRendererGui.createGui(0, 0, 100, 100, RendererCommon.ScalingType.SCALE_ASPECT_FILL, true);
+
+                LinearLayout layout = (LinearLayout) activity.findViewById(R.id.video_view_container);
+                layout.addView(videoView);
+
                 List<PeerConnection.IceServer> iceServers = new ArrayList<>();
                 iceServers.add(new PeerConnection.IceServer("stun:stun.l.google.com:19302"));
 
                 PeerConnection.Observer connObserver = new PeerConnObserverImpl();
                 ((PeerConnObserverImpl) connObserver).setActivity(activity);
+                ((PeerConnObserverImpl) connObserver).setVidRenderer(vidRenderer);
 
                 peerConnection = peerConnFactory.createPeerConnection(iceServers, new MediaConstraints(), connObserver);
 

@@ -84,7 +84,7 @@ public class SdpObserverImpl implements SdpObserver {
         try {
             SdpSignalDTO dto = new SdpSignalDTO(localSdp.type.canonicalForm(), localSdp.description);
             String json = gson.toJson(dto);
-            log.info(">>> ANSWER SDP: " + json);
+            log.info(">>> SEND ANSWER SDP: " + json);
             Intent i = new Intent();
             i.setAction(Constant.IntentTopic.ON_PEER_EVENT);
             i.putExtra(Constant.IntentExtraKey.MESSAGE, json);

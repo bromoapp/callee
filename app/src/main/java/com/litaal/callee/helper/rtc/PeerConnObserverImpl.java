@@ -13,6 +13,7 @@ import org.webrtc.DataChannel;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaStream;
 import org.webrtc.PeerConnection;
+import org.webrtc.VideoRenderer;
 
 /**
  * Created by sadmin on 6/2/2017.
@@ -23,10 +24,15 @@ public class PeerConnObserverImpl implements PeerConnection.Observer {
     private static Logger log = LoggerFactory.getLogger(PeerConnObserverImpl.class);
 
     private Activity activity;
+    private VideoRenderer vidRenderer;
     private Gson gson = new Gson();
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public void setVidRenderer(VideoRenderer vidRenderer) {
+        this.vidRenderer = vidRenderer;
     }
 
     @Override
@@ -56,8 +62,16 @@ public class PeerConnObserverImpl implements PeerConnection.Observer {
     }
 
     @Override
-    public void onAddStream(MediaStream mediaStream) {
+    public void onAddStream(final MediaStream stream) {
         log.info(">>> ADD STREAM...");
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (stream.videoTracks.size() == 1) {
+                    stream.videoTracks.get(0).addRenderer(vidRenderer);
+                }
+            }
+        });
     }
 
     @Override
