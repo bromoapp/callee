@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.litaal.caller.dto.SdpSignalDTO;
-import com.litaal.caller.helper.Constant;
+import com.litaal.callee.dto.SdpSignalDTO;
+import com.litaal.callee.helper.Constant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class SdpObserverImpl implements SdpObserver {
 
     @Override
     public void onCreateSuccess(final SessionDescription sdp) {
-        log.info(">>> ON CREATE SUCCESS");
+        log.info(">>> ON CREATE SUCCESS:\n");
         localSdp = sdp;
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -77,14 +77,14 @@ public class SdpObserverImpl implements SdpObserver {
 
     @Override
     public void onSetFailure(String s) {
-        log.info(">>> ON SET FAILURE: "+ s);
+        log.info(">>> ON SET FAILURE: " + s);
     }
 
     private void sendLocalDescription() {
         try {
             SdpSignalDTO dto = new SdpSignalDTO(localSdp.type.canonicalForm(), localSdp.description);
             String json = gson.toJson(dto);
-
+            log.info(">>> ANSWER SDP: " + json);
             Intent i = new Intent();
             i.setAction(Constant.IntentTopic.ON_PEER_EVENT);
             i.putExtra(Constant.IntentExtraKey.MESSAGE, json);
